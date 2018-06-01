@@ -1,12 +1,24 @@
+import dorkbox.systemTray.MenuItem
+import dorkbox.systemTray.SystemTray
+import dorkbox.util.CacheUtil
 import org.firmata4j.Pin
 import org.firmata4j.firmata.FirmataDevice
+import java.awt.event.ActionListener
 
 fun main(args: Array<String>){
+
+    NavigationBar()
+
     val connection = Connection(4,3,2, "/dev/cu.usbmodem14131")
-    connection.setColor(255,0,0,true)
+    connection.setColor(100,0,0,true)
     connection.close()
 
 }
+
+fun createTouchBar(){
+
+}
+
 
 class Connection(val redPin: Int, val greenPin: Int, val bluePin: Int, val port: String){
 
@@ -45,5 +57,7 @@ class Connection(val redPin: Int, val greenPin: Int, val bluePin: Int, val port:
             this.red.value = g.toLong()
             this.blue.value = b.toLong()
         }
+
+
     }
 }

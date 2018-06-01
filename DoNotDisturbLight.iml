@@ -11,5 +11,7 @@
     <orderEntry type="library" name="com.github.kurbatov:firmata4j:2.3.6" level="project" />
     <orderEntry type="library" name="com.dorkbox:SystemTray:3.14" level="project" />
     <orderEntry type="library" name="com.thizzer.jtouchbar:jtouchbar:0.1.0" level="project" />
+    <orderEntry type="library" name="net.java.dev.jna:jna:4.5.1" level="project" />
+    <orderEntry type="library" name="org.javassist:javassist:3.22.0-GA" level="project" />
   </component>
 </module>
