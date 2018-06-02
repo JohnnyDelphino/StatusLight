@@ -6,7 +6,7 @@ import org.firmata4j.transport.NetworkTransport
 import java.net.Inet4Address
 import java.net.InetAddress
 
-class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port: String) : NavigationBar.Callback {
+class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port: String, val rgbCommonAnode: Boolean) : NavigationBar.Callback {
 
     lateinit var device: FirmataDevice
     lateinit var red: Pin
@@ -24,7 +24,7 @@ class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port
         green.mode = Pin.Mode.OUTPUT
         blue = device.getPin(bluePin)
         blue.mode = Pin.Mode.OUTPUT
-        setColor(0,0,0,true)
+        setColor(0,0,0,rgbCommonAnode)
     }
 
     fun stop(){
@@ -33,10 +33,10 @@ class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port
 
     override fun onMenutItemSelected(index: Int) {
         when(index){
-            0 -> setColor(255,0,0,true)     // red
-            1 -> setColor(255,255,0,true)  // yellow
-            2 -> setColor(0,255,0,true)     // green
-            3 -> setColor(0,0,0,true)       // off
+            0 -> setColor(255,0,0,rgbCommonAnode)     // red
+            1 -> setColor(255,255,0,rgbCommonAnode)  // yellow
+            2 -> setColor(0,255,0,rgbCommonAnode)     // green
+            3 -> setColor(0,0,0,rgbCommonAnode)       // off
             4 -> stop()
             else -> {
                 System.out.println("MenuItem not relevant so far")
