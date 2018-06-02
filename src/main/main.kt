@@ -1,7 +1,7 @@
 package main
 
 fun main(args: Array<String>) {
-    val statusLight = StatusLight(6, 5, 3, "/dev/cu.usbmodem14131")
+    val statusLight = StatusLight(9, 10, 11, "/dev/cu.usbmodem14141")
     val navigationBar = NavigationBar(statusLight)
 }
 

@@ -15,11 +15,11 @@ class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port
         device.start()
         device.ensureInitializationIsDone()
         red = device.getPin(redPin)
-        red.mode = Pin.Mode.OUTPUT
+        red.mode = Pin.Mode.PWM     // DFRobot Beetle (maybe Arduino Leonardo) needs PWM-Mode for RGB LED
         green = device.getPin(greenPin)
-        green.mode = Pin.Mode.OUTPUT
+        green.mode = Pin.Mode.PWM
         blue = device.getPin(bluePin)
-        blue.mode = Pin.Mode.OUTPUT
+        blue.mode = Pin.Mode.PWM
         setColor(0,0,0,true)
     }
 
