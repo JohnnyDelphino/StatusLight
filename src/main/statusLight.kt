@@ -2,6 +2,9 @@ package main
 
 import org.firmata4j.Pin
 import org.firmata4j.firmata.FirmataDevice
+import org.firmata4j.transport.NetworkTransport
+import java.net.Inet4Address
+import java.net.InetAddress
 
 class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port: String) : NavigationBar.Callback {
 
@@ -11,7 +14,8 @@ class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port
     lateinit var blue: Pin
 
     init {
-        device = FirmataDevice(port)
+        val networkTransport = NetworkTransport(InetAddress.getByName("192.168.178.81"),3030)
+        device = FirmataDevice(networkTransport)
         device.start()
         device.ensureInitializationIsDone()
         red = device.getPin(redPin)
@@ -42,7 +46,7 @@ class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port
 
     fun setColor(red: Long, green: Long, blue: Long, commonAnnode: Boolean){
         if(device.isReady){
-            System.out.println("main.StatusLight is ready, send ColorChange-Request RGB(${red}|${green}|${blue})")
+            System.out.println("StatusLight is ready, send ColorChange-Request RGB(${red}|${green}|${blue})")
             this.red.value = if (commonAnnode) (255 - red) else red
             this.green.value = if(commonAnnode) (255 - green) else green
             this.blue.value = if(commonAnnode) (255 - blue) else blue
