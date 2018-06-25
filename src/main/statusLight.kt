@@ -2,6 +2,7 @@ package main
 
 import org.firmata4j.Pin
 import org.firmata4j.firmata.FirmataDevice
+import java.io.IOException
 
 class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port: String) : NavigationBar.Callback {
 
@@ -12,15 +13,22 @@ class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port
 
     init {
         device = FirmataDevice(port)
-        device.start()
-        device.ensureInitializationIsDone()
-        red = device.getPin(redPin)
-        red.mode = Pin.Mode.PWM     // DFRobot Beetle (maybe Arduino Leonardo) needs PWM-Mode for RGB LED
-        green = device.getPin(greenPin)
-        green.mode = Pin.Mode.PWM
-        blue = device.getPin(bluePin)
-        blue.mode = Pin.Mode.PWM
-        setColor(0,0,0,true)
+        try {
+            device.start()
+            device.ensureInitializationIsDone()
+            red = device.getPin(redPin)
+            red.mode = Pin.Mode.PWM     // DFRobot Beetle (maybe Arduino Leonardo) needs PWM-Mode for RGB LED
+            green = device.getPin(greenPin)
+            green.mode = Pin.Mode.PWM
+            blue = device.getPin(bluePin)
+            blue.mode = Pin.Mode.PWM
+            setColor(0,0,0,true)
+            registerShutdownHandler()
+        } catch (e: IOException){
+            System.out.println("Unable to Start firmata Device on Port ${port}\nERROR: ${e.localizedMessage}")
+        } catch (e: InterruptedException){
+            System.out.println("Problem initializing firmata Device\nERROR: ${e.localizedMessage}")
+        }
     }
 
     fun stop(){
@@ -50,4 +58,12 @@ class StatusLight(val redPin: Int, val greenPin: Int, val bluePin: Int, val port
     }
 
 
+    fun registerShutdownHandler(){
+        Runtime.getRuntime().addShutdownHook(Thread() { run{
+            if (device.isReady){
+                System.out.println("Shutting Down Firmata Device")
+                device.stop()
+            }
+        } })
+    }
 }
